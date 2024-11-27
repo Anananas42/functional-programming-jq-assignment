@@ -1,0 +1,63 @@
+default:
+  image: gitlab.ewi.tudelft.nl:4242/cse3100/admin/docker-ci-image-builder@sha256:c9786219f357d921e2d8dcc76d7fb27b23eee662c4a2749c0e25b8830721c9fa
+
+
+stages:
+- build
+- test
+
+build:
+  stage: build
+  artifacts:
+    expire_in: 4 weeks
+  before_script:
+  - cp -r ~/.cabal .
+  - cp -r /dist-newstyle .
+  - cabal v2-configure --enable-tests
+  script:
+  - cabal v2-build exe:jq-clone
+
+
+from-upstream:
+  stage: test
+  artifacts:
+    expire_in: 4 weeks
+  before_script:
+  - cp -r ~/.cabal .
+  - cp -r /dist-newstyle .
+  - cabal v2-configure --enable-tests
+  script:
+  - cabal test from-upstream
+
+week3:
+  stage: test
+  artifacts:
+    expire_in: 4 weeks
+  before_script:
+  - cp -r ~/.cabal .
+  - cp -r /dist-newstyle .
+  - cabal v2-configure --enable-tests
+  script:
+  - cabal test week3
+
+week4:
+  stage: test
+  artifacts:
+    expire_in: 4 weeks
+  before_script:
+  - cp -r ~/.cabal .
+  - cp -r /dist-newstyle .
+  - cabal v2-configure --enable-tests
+  script:
+  - cabal test week4
+
+unit-tests:
+  stage: test
+  artifacts:
+    expire_in: 4 weeks
+  before_script:
+  - cp -r ~/.cabal .
+  - cp -r /dist-newstyle .
+  - cabal v2-configure --enable-tests
+  script:
+  - cabal test unit-tests
